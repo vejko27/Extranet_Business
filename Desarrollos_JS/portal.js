@@ -9,6 +9,14 @@ if (portalShell && sidebarToggle) {
         console.warn("No se pudo recuperar el estado del menú lateral.", error);
     }
 
+    document.querySelectorAll("form[data-confirm]").forEach((form) => {
+        form.addEventListener("submit", (event) => {
+            if (!window.confirm(form.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
+    });
+
     const updateSidebar = () => {
         portalShell.classList.toggle("sidebar-collapsed", collapsed);
         sidebarToggle.setAttribute("aria-pressed", String(collapsed));

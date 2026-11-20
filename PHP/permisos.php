@@ -120,7 +120,7 @@ portalStart('Roles y permisos');
     <?php if ($selectedRole === 1): ?>
         <p>El administrador tiene todos los permisos; no se pueden modificar.</p>
     <?php else: ?>
-        <p>Para entrar a un módulo, activa «Ver». El permiso «Eliminar» queda reservado para funciones futuras.</p>
+        <p>Para entrar a un módulo, activa «Ver». En Clientes, «Eliminar» permite archivar y restaurar clientes.</p>
         <form method="post">
             <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
             <input type="hidden" name="accion" value="guardar">
