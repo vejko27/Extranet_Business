@@ -112,6 +112,8 @@ th { color: #536a73; }
 .clients-card .clients-button-archive:hover { background: #8f1b13; }
 .clients-archived summary { color: #203d48; font-size: 16px; font-weight: 600; cursor: pointer; }
 .clients-archived .table-wrap { margin-top: 16px; }
+.clients-search { max-width: 430px; margin-bottom: 16px; }
+.clients-search .muted { margin: 6px 0 0; }
 .clients-table th { background: #006d88; color: #fff; font-size: 12px; text-transform: uppercase; }
 .clients-table th, .clients-table td { padding: 12px 14px; border-bottom: 1px solid #e2e8f0; }
 .clients-table tbody tr:nth-child(even) { background: #f3f8fa; }

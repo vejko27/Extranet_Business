@@ -36,7 +36,7 @@ Los administradores pueden crear roles, configurar permisos y gestionar usuarios
 
 El portal muestra en el menú lateral y en los accesos rápidos únicamente las opciones disponibles para el usuario. En escritorio se puede reducir el menú lateral; en móviles se adapta al ancho de pantalla.
 
-El módulo Clientes permite registrar y editar clientes desde Área Comercial. El certificado se selecciona entre OEA, BASC e ISO 2800; los valores anteriores se conservan al editar. Su estado se selecciona manualmente. Con el permiso «Eliminar» de Clientes se puede archivar un cliente y restaurarlo desde «Clientes archivados»; sus datos no se eliminan. El administrador puede asignar los permisos de Clientes desde Roles y permisos; los demás roles no reciben acceso automáticamente.
+El módulo Clientes permite registrar y editar clientes desde Área Comercial. El buscador filtra los clientes activos por razón social, RUC o certificado mientras se escribe y requiere JavaScript. El certificado se selecciona entre OEA, BASC e ISO 2800; los valores anteriores se conservan al editar. Su estado se selecciona manualmente. Con el permiso «Eliminar» de Clientes se puede archivar un cliente y restaurarlo desde «Clientes archivados»; sus datos no se eliminan. El administrador puede asignar los permisos de Clientes desde Roles y permisos; los demás roles no reciben acceso automáticamente.
 
 En una instalación existente, ejecuta `C:\xampp\php\php.exe .\PHP\actualizar-clientes.php` desde la raíz del proyecto para crear o actualizar la tabla y registrar el módulo sin modificar los datos existentes. Se requieren permisos de creación y modificación de tablas e inserción. En una instalación nueva, el instalador inicial crea el módulo.
 

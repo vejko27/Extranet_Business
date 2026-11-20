@@ -224,8 +224,13 @@ portalStart('Clientes');
     <?php if (!$clients): ?>
         <p class="muted">Aún no hay clientes registrados.</p>
     <?php else: ?>
+    <div class="clients-search" id="clients-search" hidden>
+        <label for="clients-search-input">Buscar clientes</label>
+        <input type="search" id="clients-search-input" placeholder="Razón social, RUC o certificado" autocomplete="off">
+        <p class="muted" id="clients-search-status" role="status" aria-live="polite"></p>
+    </div>
     <div class="table-wrap">
-        <table class="clients-table">
+        <table class="clients-table" id="clients-active-table">
             <thead><tr>
                 <th scope="col">N.º</th><th scope="col">Razón social</th><th scope="col">RUC</th>
                 <th scope="col">Tipo</th><th scope="col">Certificado</th><th scope="col">Acuerdo de seguridad</th>
@@ -234,7 +239,7 @@ portalStart('Clientes');
             </tr></thead>
             <tbody>
             <?php foreach ($clients as $index => $client): ?>
-                <tr>
+                <tr data-name="<?= e($client['razon_social']) ?>" data-ruc="<?= e($client['ruc']) ?>" data-certificate="<?= e($client['certificado']) ?>">
                     <td data-label="N.º"><?= $index + 1 ?></td>
                     <td data-label="Razón social"><?= e($client['razon_social']) ?></td>
                     <td data-label="RUC"><?= $client['ruc'] !== '' ? e($client['ruc']) : '—' ?></td>
