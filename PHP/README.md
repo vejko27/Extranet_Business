@@ -1,6 +1,7 @@
 # Acceso a Smart Business
 
 Los estilos de la interfaz se encuentran en `Estilos_CSS` en la raíz del proyecto: `login.css` para el inicio de sesión y `portal.css` para las páginas internas.
+Los archivos JavaScript se encuentran en `Desarrollos_JS` en la raíz del proyecto.
 
 ## Configuración local de MySQL
 

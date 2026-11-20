@@ -19,7 +19,8 @@ $csrfToken = htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#173b49">
     <title>Iniciar sesión | Smart Business</title>
-    <link rel="stylesheet" href="Estilos_CSS/login.css">
+    <link rel="icon" type="image/png" sizes="64x64" href="Logo/favicon-business.png">
+    <link rel="stylesheet" href="Estilos_CSS/login.css?v=<?= filemtime(__DIR__ . '\\Estilos_CSS\\login.css') ?>">
 </head>
 <body>
     <main class="login-shell">

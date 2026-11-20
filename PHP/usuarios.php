@@ -139,52 +139,60 @@ try {
 
 portalStart('Usuarios y roles');
 ?>
-<div class="eyebrow">Administración</div>
-<h1>Usuarios y roles</h1>
-<p>Administra los accesos de la extranet.</p>
+<div class="users-header">
+    <img src="../Logo/Business_2023_Grande.jpg" alt="Smart Business Corporation">
+    <div>
+        <h1>Gestión de usuarios</h1>
+        <p><?= $canCreate ? 'Crea usuarios y asigna sus roles.' : 'Consulta los usuarios y sus roles.' ?></p>
+    </div>
+</div>
 <?php if ($notice !== ''): ?><p class="notice" role="status"><?= e($notice) ?></p><?php endif; ?>
 <?php if ($error !== ''): ?><p class="notice error" role="alert"><?= e($error) ?></p><?php endif; ?>
 
 <?php if ($editing || $canCreate): ?>
-<section class="card" id="crear-usuario">
+<section class="card users-card" id="crear-usuario">
     <h2><?= $editing ? 'Editar usuario' : 'Crear usuario' ?></h2>
     <form method="post">
         <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
         <input type="hidden" name="accion" value="<?= $editing ? 'editar' : 'crear' ?>">
         <?php if ($editing): ?><input type="hidden" name="id" value="<?= (int) $editing['id'] ?>"><?php endif; ?>
-        <div class="fields">
-            <label>Nombre<input name="nombre" maxlength="100" required value="<?= e($editing['nombre'] ?? '') ?>"></label>
-            <label>Usuario<input name="usuario" maxlength="100" required value="<?= e($editing['usuario'] ?? '') ?>"></label>
-            <label>Correo (opcional)<input type="email" name="email" maxlength="254" value="<?= e($editing['email'] ?? '') ?>"></label>
-            <label>Contraseña <?= $editing ? '(dejar vacía para conservar)' : '' ?>
-                <input type="password" name="password" autocomplete="new-password" <?= $editing ? '' : 'required' ?>>
+        <div class="users-fields">
+            <label><span class="sr-only">Nombre</span><input name="nombre" placeholder="Nombre y apellido" maxlength="100" required value="<?= e($editing['nombre'] ?? '') ?>"></label>
+            <label><span class="sr-only">Usuario</span><input name="usuario" placeholder="Usuario" maxlength="100" required value="<?= e($editing['usuario'] ?? '') ?>"></label>
+            <label><span class="sr-only">Correo (opcional)</span><input type="email" name="email" placeholder="Correo (opcional)" maxlength="254" value="<?= e($editing['email'] ?? '') ?>"></label>
+            <label><span class="sr-only">Contraseña<?= $editing ? ' (dejar vacía para conservar)' : '' ?></span>
+                <input type="password" name="password" placeholder="<?= $editing ? 'Nueva contraseña (opcional)' : 'Contraseña' ?>" autocomplete="new-password" aria-describedby="password-hint" <?= $editing ? '' : 'required' ?>>
             </label>
-            <label>Rol
+            <label><span class="sr-only">Rol</span>
                 <select name="rol_id" required>
                     <?php foreach ($allowedRoles as $role): ?>
                         <option value="<?= (int) $role['id'] ?>" <?= (int) ($editing['rol_id'] ?? 0) === (int) $role['id'] ? 'selected' : '' ?>><?= e($role['nombre']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </label>
-            <button type="submit">Guardar usuario</button>
+            <button type="submit"><?= $editing ? 'Guardar cambios' : 'Crear' ?></button>
         </div>
-        <p class="muted">La contraseña debe tener entre 12 y 72 bytes. Solo un administrador puede asignar otros roles.</p>
+        <p class="muted" id="password-hint">La contraseña debe tener entre 12 y 72 bytes. <?= $editing ? 'Déjala vacía para conservar la actual. ' : '' ?>Solo un administrador puede asignar otros roles.</p>
         <?php if ($editing): ?><a href="usuarios.php">Cancelar edición</a><?php endif; ?>
     </form>
 </section>
 <?php endif; ?>
 
-<section class="card">
+<section class="card users-card">
     <h2>Usuarios registrados</h2>
     <div class="table-wrap">
-        <table>
-            <thead><tr><th>Nombre</th><th>Usuario</th><th>Correo</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <table class="users-table">
+            <thead><tr><th scope="col">ID</th><th scope="col">Nombre</th><th scope="col">Usuario</th><th scope="col">Correo</th><th scope="col">Rol</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead>
             <tbody>
             <?php foreach ($users as $user): ?>
                 <tr>
-                    <td><?= e($user['nombre']) ?></td><td><?= e($user['usuario']) ?></td>
-                    <td><?= e($user['email']) ?></td><td><?= e($user['rol']) ?></td><td><?= e($user['estado']) ?></td>
-                    <td><div class="actions">
+                    <td data-label="ID"><?= (int) $user['id'] ?></td>
+                    <td data-label="Nombre"><?= e($user['nombre']) ?></td>
+                    <td data-label="Usuario"><?= e($user['usuario']) ?></td>
+                    <td data-label="Correo"><?= e($user['email']) ?></td>
+                    <td data-label="Rol"><span class="users-badge"><?= e($user['rol']) ?></span></td>
+                    <td data-label="Estado"><span class="users-badge <?= $user['estado'] === 'activo' ? 'users-badge-active' : 'users-badge-inactive' ?>"><?= e(ucfirst($user['estado'])) ?></span></td>
+                    <td data-label="Acciones"><div class="actions">
                         <?php if ($canEdit && ($isAdmin || (int) $user['rol_id'] === (int) $_SESSION['rol_id'])): ?>
                             <a class="button" href="usuarios.php?editar=<?= (int) $user['id'] ?>">Editar</a>
                             <?php if ((int) $user['id'] !== (int) $_SESSION['id_usuario']): ?>
@@ -192,7 +200,7 @@ portalStart('Usuarios y roles');
                                 <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
                                 <input type="hidden" name="accion" value="estado">
                                 <input type="hidden" name="id" value="<?= (int) $user['id'] ?>">
-                                <button type="submit"><?= $user['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?></button>
+                                <button type="submit" class="<?= $user['estado'] === 'activo' ? 'users-button-danger' : 'users-button-success' ?>"><?= $user['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?></button>
                             </form>
                             <?php endif; ?>
                         <?php endif; ?>

@@ -23,15 +23,16 @@ function portalStart(string $title): void
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($title) ?> | Smart Business</title>
-    <link rel="stylesheet" href="../Estilos_CSS/portal.css">
-    <script src="portal.js" defer></script>
+    <link rel="icon" type="image/png" sizes="64x64" href="../Logo/favicon-business.png">
+    <link rel="stylesheet" href="../Estilos_CSS/portal.css?v=<?= filemtime(dirname(__DIR__) . '\\Estilos_CSS\\portal.css') ?>">
+    <script src="../Desarrollos_JS/portal.js?v=<?= filemtime(dirname(__DIR__) . '\\Desarrollos_JS\\portal.js') ?>" defer></script>
 </head>
 <body>
 <div class="portal-shell" id="portal-shell">
     <aside class="sidebar" aria-label="Menú lateral">
         <div class="sidebar-heading">
             <a class="sidebar-brand" href="dashboard.php" aria-label="Extranet Smart Business">
-                <span class="brand-mark" aria-hidden="true">SB</span>
+                <img class="brand-mark" src="../Logo/favicon-business.png" alt="">
                 <span class="sidebar-label">Extranet <strong>Smart Business</strong></span>
             </a>
             <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-label="Reducir menú lateral" aria-pressed="false" title="Reducir menú lateral" hidden>
@@ -59,6 +60,7 @@ function portalStart(string $title): void
         </form>
     </aside>
     <div class="portal-content">
+        <?php if ($page !== 'dashboard.php' && $page !== 'usuarios.php'): ?>
         <header class="portal-header">
             <img src="../Logo/Business_Poca_Resolucion.jpg" alt="Smart Business Corporation">
             <div class="portal-heading">
@@ -66,7 +68,8 @@ function portalStart(string $title): void
                 <span class="portal-heading-title"><?= e($title) ?></span>
             </div>
         </header>
-        <main>
+        <?php endif; ?>
+        <main<?= $page === 'dashboard.php' ? ' class="dashboard-main"' : ($page === 'usuarios.php' ? ' class="users-main"' : '') ?>>
     <?php
 }
 
