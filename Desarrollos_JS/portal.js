@@ -10,22 +10,27 @@ if (portalShell && sidebarToggle) {
     }
 
     const clientsSearch = document.getElementById("clients-search");
+    const clientsSearchForm = document.getElementById("clients-search-form");
     const clientsSearchInput = document.getElementById("clients-search-input");
+    const clientsSearchYear = document.getElementById("clients-search-year");
     const clientsSearchStatus = document.getElementById("clients-search-status");
     const clientsTable = document.getElementById("clients-active-table");
 
-    if (clientsSearch && clientsSearchInput && clientsSearchStatus && clientsTable) {
+    if (clientsSearch && clientsSearchForm && clientsSearchInput && clientsSearchYear && clientsSearchStatus && clientsTable) {
         const normalizeSearch = (value) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
         const rows = Array.from(clientsTable.querySelectorAll("tbody tr")).map((row) => ({
             element: row,
             fields: [row.dataset.name, row.dataset.ruc, row.dataset.certificate].map(normalizeSearch),
+            year: row.dataset.year,
         }));
 
         const filterClients = () => {
             const query = normalizeSearch(clientsSearchInput.value);
+            const selectedYear = clientsSearchYear.value;
             let matches = 0;
-            rows.forEach(({ element, fields }) => {
-                const visible = fields.some((field) => field.includes(query));
+            rows.forEach(({ element, fields, year }) => {
+                const yearMatches = selectedYear === "" || (selectedYear === "sin_fecha" ? year === "" : year === selectedYear);
+                const visible = yearMatches && fields.some((field) => field.includes(query));
                 element.hidden = !visible;
                 if (visible) matches += 1;
             });
@@ -35,6 +40,11 @@ if (portalShell && sidebarToggle) {
         };
 
         clientsSearchInput.addEventListener("input", filterClients);
+        clientsSearchYear.addEventListener("change", filterClients);
+        clientsSearchForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            filterClients();
+        });
         clientsSearch.hidden = false;
         filterClients();
     }
