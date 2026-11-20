@@ -60,7 +60,7 @@ function portalStart(string $title): void
         </form>
     </aside>
     <div class="portal-content">
-        <?php if ($page !== 'dashboard.php' && $page !== 'usuarios.php'): ?>
+        <?php if ($page !== 'dashboard.php' && $page !== 'usuarios.php' && $page !== 'permisos.php'): ?>
         <header class="portal-header">
             <img src="../Logo/Business_Poca_Resolucion.jpg" alt="Smart Business Corporation">
             <div class="portal-heading">
@@ -69,7 +69,7 @@ function portalStart(string $title): void
             </div>
         </header>
         <?php endif; ?>
-        <main<?= $page === 'dashboard.php' ? ' class="dashboard-main"' : ($page === 'usuarios.php' ? ' class="users-main"' : '') ?>>
+        <main<?= $page === 'dashboard.php' ? ' class="dashboard-main"' : ($page === 'usuarios.php' ? ' class="users-main"' : ($page === 'permisos.php' ? ' class="permissions-main"' : '')) ?>>
     <?php
 }
 

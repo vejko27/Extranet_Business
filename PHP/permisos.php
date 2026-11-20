@@ -93,25 +93,18 @@ try {
 
 portalStart('Roles y permisos');
 ?>
-<div class="eyebrow">Administración</div>
-<h1>Roles y permisos</h1>
-<p>Define qué puede hacer cada rol en cada módulo.</p>
+<div class="permissions-header">
+    <img src="../Logo/Business_2023_Grande.jpg" alt="Smart Business Corporation">
+    <div>
+        <h1>Gestión de permisos</h1>
+        <p>Define qué puede hacer cada rol en cada módulo.</p>
+    </div>
+</div>
 <?php if ($notice !== ''): ?><p class="notice" role="status"><?= e($notice) ?></p><?php endif; ?>
 <?php if ($error !== ''): ?><p class="notice error" role="alert"><?= e($error) ?></p><?php endif; ?>
 
-<section class="card">
-    <h2>Crear rol</h2>
-    <form method="post" class="fields">
-        <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
-        <input type="hidden" name="accion" value="crear_rol">
-        <label>Nombre del rol<input name="nombre" maxlength="100" required></label>
-        <button type="submit">Crear rol</button>
-    </form>
-</section>
-
-<section class="card">
-    <h2>Permisos por módulo</h2>
-    <form method="get" class="fields">
+<section class="card permissions-card">
+    <form method="get" class="permissions-role-form">
         <label>Rol
             <select name="rol">
                 <?php foreach ($roles as $role): ?>
@@ -121,33 +114,49 @@ portalStart('Roles y permisos');
         </label>
         <button type="submit">Seleccionar</button>
     </form>
+</section>
+
+<section class="card permissions-card">
     <?php if ($selectedRole === 1): ?>
         <p>El administrador tiene todos los permisos; no se pueden modificar.</p>
     <?php else: ?>
-        <p class="muted">Para entrar a un módulo, activa «Ver». El permiso «Eliminar» queda reservado para funciones futuras.</p>
+        <p>Para entrar a un módulo, activa «Ver». El permiso «Eliminar» queda reservado para funciones futuras.</p>
         <form method="post">
             <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
             <input type="hidden" name="accion" value="guardar">
             <input type="hidden" name="rol_id" value="<?= $selectedRole ?>">
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Módulo</th><?php foreach ($actions as $label): ?><th><?= e($label) ?></th><?php endforeach; ?></tr></thead>
-                    <tbody>
-                    <?php foreach ($modules as $module): ?>
-                        <tr>
-                            <td><?= e($module['nombre']) ?></td>
-                            <?php foreach ($actions as $key => $label): ?>
-                                <td><input type="checkbox" aria-label="<?= e($label . ' ' . $module['nombre']) ?>"
-                                    name="permisos[<?= (int) $module['id'] ?>][<?= e($key) ?>]" value="1"
-                                    <?= !empty($currentPermissions[(int) $module['id']][$key]) ? 'checked' : '' ?>></td>
-                            <?php endforeach; ?>
-                        </tr>
+    <?php endif; ?>
+    <div class="table-wrap">
+        <table class="permissions-table">
+            <thead><tr><th scope="col">Módulo</th><?php foreach ($actions as $label): ?><th scope="col"><?= e($label) ?></th><?php endforeach; ?></tr></thead>
+            <tbody>
+            <?php foreach ($modules as $module): ?>
+                <tr>
+                    <th scope="row"><?= e($module['nombre']) ?></th>
+                    <?php foreach ($actions as $key => $label): ?>
+                        <td><label><input type="checkbox" aria-label="<?= e($label . ' ' . $module['nombre']) ?>"
+                            name="permisos[<?= (int) $module['id'] ?>][<?= e($key) ?>]" value="1"
+                            <?= $selectedRole === 1 || !empty($currentPermissions[(int) $module['id']][$key]) ? 'checked' : '' ?>
+                            <?= $selectedRole === 1 ? 'disabled' : '' ?>><span class="permissions-action-label" aria-hidden="true"><?= e($label) ?></span></label></td>
                     <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-            <p><button type="submit">Guardar permisos</button></p>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($selectedRole !== 1): ?>
+        <p class="permissions-submit"><button type="submit">Guardar permisos</button></p>
         </form>
     <?php endif; ?>
+</section>
+
+<section class="card permissions-card">
+    <h2>Crear rol</h2>
+    <form method="post" class="permissions-role-form">
+        <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
+        <input type="hidden" name="accion" value="crear_rol">
+        <label>Nombre del rol<input name="nombre" maxlength="100" required></label>
+        <button type="submit">Crear rol</button>
+    </form>
 </section>
 <?php portalEnd(); ?>

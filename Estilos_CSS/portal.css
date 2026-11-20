@@ -65,13 +65,13 @@ th { color: #536a73; }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .muted { color: #78878d; font-size: 13px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-.users-main { max-width: none; padding: 28px 24px 60px; }
-.users-header { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; }
-.users-header img { display: block; width: 190px; height: 76px; flex: 0 0 190px; border: 1px solid #e4eaec; border-radius: 9px; background: #fff; object-fit: cover; }
-.users-header h1 { margin: 0 0 5px; font-size: 26px; letter-spacing: 0; }
-.users-header p { margin: 0; font-size: 14px; }
-.users-card { margin-top: 20px; padding: 24px; border: 0; border-radius: 14px; box-shadow: 0 2px 10px rgba(32,61,72,.08); }
-.users-card h2 { margin: 0 0 16px; font-size: 18px; }
+.users-main, .permissions-main { max-width: none; padding: 28px 24px 60px; }
+.users-header, .permissions-header { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; }
+.users-header img, .permissions-header img { display: block; width: 190px; height: 76px; flex: 0 0 190px; border: 1px solid #e4eaec; border-radius: 9px; background: #fff; object-fit: cover; }
+.users-header h1, .permissions-header h1 { margin: 0 0 5px; font-size: 26px; letter-spacing: 0; }
+.users-header p, .permissions-header p { margin: 0; font-size: 14px; }
+.users-card, .permissions-card { margin-top: 20px; padding: 24px; border: 0; border-radius: 14px; box-shadow: 0 2px 10px rgba(32,61,72,.08); }
+.users-card h2, .permissions-card h2 { margin: 0 0 16px; font-size: 18px; }
 .users-fields { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .users-fields label { min-width: 0; flex: 0 1 170px; }
 .users-fields input:not([type=checkbox]):not([type=hidden]), .users-fields select { height: 42px; margin: 0; padding: 0 12px; border-color: #cbd5e1; font-size: 13px; }
@@ -86,6 +86,17 @@ th { color: #536a73; }
 .users-card .users-button-danger:hover { background: #b91c1c; }
 .users-card .users-button-success { background: #16835d; }
 .users-card .users-button-success:hover { background: #116c4d; }
+.permissions-role-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.permissions-role-form label { width: 180px; max-width: 100%; }
+.permissions-card > p { margin: 0 0 16px; font-size: 13px; }
+.permissions-table thead th { background: #f8fafc; color: #475569; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.permissions-table th, .permissions-table td { padding: 12px 14px; border-bottom: 1px solid #e2e8f0; }
+.permissions-table tbody th { color: #203d48; font-weight: 400; }
+.permissions-table tbody tr:nth-child(even) { background: #f8fafc; }
+.permissions-table th:not(:first-child), .permissions-table td { width: 12%; text-align: center; }
+.permissions-table td label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.permissions-action-label { display: none; }
+.permissions-submit { margin: 18px 0 0; }
 @media (max-width: 700px) {
     .portal-shell, .portal-shell.sidebar-collapsed { display: block; }
     .sidebar { position: static; height: auto; padding: 12px 16px; }
@@ -105,10 +116,10 @@ th { color: #536a73; }
     .dashboard-intro > div { flex: 0 1 auto; }
     .dashboard-logo { width: min(300px, 100%); height: 128px; flex: 0 0 auto; }
     th, td { white-space: nowrap; }
-    .users-header { flex-wrap: wrap; gap: 12px; }
-    .users-header img { width: 150px; height: 66px; flex-basis: 150px; }
-    .users-header h1 { font-size: 22px; }
-    .users-card { padding: 18px; }
+    .users-header, .permissions-header { flex-wrap: wrap; gap: 12px; }
+    .users-header img, .permissions-header img { width: 150px; height: 66px; flex-basis: 150px; }
+    .users-header h1, .permissions-header h1 { font-size: 22px; }
+    .users-card, .permissions-card { padding: 18px; }
     .users-fields label, .users-fields button { flex: 1 1 100%; }
     .users-table, .users-table tbody, .users-table tr { display: block; width: 100%; }
     .users-table thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -118,6 +129,14 @@ th { color: #536a73; }
     .users-table td::before { content: attr(data-label); color: #536a73; font-size: 12px; font-weight: 600; }
     .users-table td:last-child { border-bottom: 0; }
     .users-badge { justify-self: start; }
+    .permissions-table, .permissions-table tbody { display: block; width: 100%; }
+    .permissions-table thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .permissions-table tbody tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; }
+    .permissions-table tbody tr:last-child { margin-bottom: 0; }
+    .permissions-table tbody th { grid-column: 1 / -1; padding: 0 0 8px; white-space: normal; overflow-wrap: anywhere; font-weight: 600; }
+    .permissions-table td { width: auto; padding: 4px 0; border: 0; text-align: left; }
+    .permissions-action-label { display: inline; color: #536a73; font-size: 12px; font-weight: 400; }
+    .permissions-table input[type=checkbox] { flex: 0 0 17px; margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
     .dashboard-card { transition: none; }
