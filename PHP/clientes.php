@@ -183,7 +183,7 @@ portalStart('Clientes');
         </div>
         <div class="clients-form-actions">
             <button type="submit"><?= $editing ? 'Guardar cambios' : 'Registrar cliente' ?></button>
-            <?php if ($editing): ?><a href="clientes.php">Cancelar edición</a><?php endif; ?>
+            <?php if ($editing): ?><a class="button button-secondary" href="clientes.php">Cancelar edición</a><?php endif; ?>
         </div>
         <p class="muted">Solo la razón social es obligatoria. El estado se selecciona manualmente.</p>
     </form>

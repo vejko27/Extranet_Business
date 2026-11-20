@@ -60,6 +60,8 @@ input:not([type=checkbox]):not([type=hidden]), select { display: block; width: 1
 input[type=checkbox] { width: 17px; height: 17px; accent-color: #087f9d; }
 main button, .button { display: inline-block; padding: 11px 16px; border: 0; border-radius: 6px; background: #087f9d; color: white; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
 main button:hover, .button:hover { background: #066e89; }
+.button-secondary { padding: 10px 15px; border: 1px solid #b8cbd1; color: #315d69; background: #fff; }
+.button-secondary:hover { border-color: #087f9d; color: #00566c; background: #eaf3f5; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid #02b8bd; outline-offset: 3px; }
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
