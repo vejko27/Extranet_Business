@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 $types = ['' => 'Sin indicar', 'nacional' => 'Nacional', 'exterior' => 'Exterior'];
-$certificates = ['' => 'Sin indicar', 'OEA' => 'OEA', 'BASC' => 'BASC', 'ISO 2800' => 'ISO 2800'];
+$certificates = ['' => 'Sin indicar', 'OEA' => 'OEA', 'BASC' => 'BASC', 'ISO 2800' => 'ISO 2800', 'No-Tiene' => 'No-Tiene'];
 $answers = ['' => 'Sin indicar', 'si' => 'Sí', 'no' => 'No', 'no_aplica' => 'No aplica'];
 $statuses = ['' => 'Sin indicar', 'pendiente' => 'Pendiente', 'homologado' => 'Homologado'];
 
