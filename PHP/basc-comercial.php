@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '\\auth.php';
-require __DIR__ . '\\layout.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/layout.php';
 exigirPermiso('BASC Comercial', 'ver');
 
 $canEdit = puede('BASC Comercial', 'editar');
@@ -240,7 +240,7 @@ portalStart('BASC - Comercial');
     <?php if (!$clients): ?>
         <p class="muted">No hay clientes homologados activos.</p>
     <?php else: ?>
-    <?php $canCreate = false; require __DIR__ . '\\clientes-buscador.php'; ?>
+    <?php $canCreate = false; require __DIR__ . '/clientes-buscador.php'; ?>
     <p class="muted basc-scroll-hint">Desplázate horizontalmente para ver toda la matriz.</p>
     <div class="table-wrap basc-table-wrap" tabindex="0" role="region" aria-label="Matriz de criticidad de clientes">
         <table class="basc-table" id="clients-active-table">

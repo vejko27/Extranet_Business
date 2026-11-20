@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '\\PHP\\session.php';
+require __DIR__ . '/PHP/session.php';
 
 if (isset($_SESSION['id_usuario'])) {
     header('Location: PHP/dashboard.php', true, 303);
@@ -20,7 +20,7 @@ $csrfToken = htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8');
     <meta name="theme-color" content="#173b49">
     <title>Iniciar sesión | Smart Business</title>
     <link rel="icon" type="image/png" sizes="64x64" href="Logo/favicon-business.png">
-    <link rel="stylesheet" href="Estilos_CSS/login.css?v=<?= filemtime(__DIR__ . '\\Estilos_CSS\\login.css') ?>">
+    <link rel="stylesheet" href="Estilos_CSS/login.css?v=<?= filemtime(__DIR__ . '/Estilos_CSS/login.css') ?>">
 </head>
 <body>
     <main class="login-shell">

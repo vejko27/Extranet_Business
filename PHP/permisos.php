@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '\\auth.php';
-require __DIR__ . '\\layout.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/layout.php';
 
 if ((int) $_SESSION['rol_id'] !== 1) {
     http_response_code(403);

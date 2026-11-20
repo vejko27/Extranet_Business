@@ -26,8 +26,8 @@ function portalStart(string $title): void
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($title) ?> | Smart Business</title>
     <link rel="icon" type="image/png" sizes="64x64" href="../Logo/favicon-business.png">
-    <link rel="stylesheet" href="../Estilos_CSS/portal.css?v=<?= filemtime(dirname(__DIR__) . '\\Estilos_CSS\\portal.css') ?>">
-    <script src="../Desarrollos_JS/portal.js?v=<?= filemtime(dirname(__DIR__) . '\\Desarrollos_JS\\portal.js') ?>" defer></script>
+    <link rel="stylesheet" href="../Estilos_CSS/portal.css?v=<?= filemtime(dirname(__DIR__) . '/Estilos_CSS/portal.css') ?>">
+    <script src="../Desarrollos_JS/portal.js?v=<?= filemtime(dirname(__DIR__) . '/Desarrollos_JS/portal.js') ?>" defer></script>
 </head>
 <body>
 <div class="portal-shell" id="portal-shell">

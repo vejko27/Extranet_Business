@@ -1,5 +1,6 @@
 $ErrorActionPreference = 'Stop'
-$php = 'C:\xampp\php\php.exe'
+$phpCommand = Get-Command php.exe -ErrorAction SilentlyContinue
+$php = if ($phpCommand) { $phpCommand.Source } else { 'C:\xampp\php\php.exe' }
 $installer = Join-Path $PSScriptRoot 'install-admin.php'
 
 if (-not (Test-Path -LiteralPath $php -PathType Leaf)) {

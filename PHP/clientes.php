@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '\\auth.php';
-require __DIR__ . '\\layout.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/layout.php';
 exigirPermiso('Clientes', 'ver');
-require __DIR__ . '\\clientes-comunes.php';
+require __DIR__ . '/clientes-comunes.php';
 
 $canCreate = puede('Clientes', 'crear');
 $canEdit = puede('Clientes', 'editar');
@@ -204,7 +204,7 @@ portalStart('Clientes');
 <?php
 $listTitle = 'Clientes registrados';
 $emptyMessage = 'Aún no hay clientes registrados.';
-require __DIR__ . '\\clientes-listado.php';
+require __DIR__ . '/clientes-listado.php';
 ?>
 <?php if ($canArchive): ?>
 <section class="card clients-card">

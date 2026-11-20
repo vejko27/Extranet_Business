@@ -12,7 +12,7 @@ if (!isset($clients, $types, $answers, $statuses, $canCreate, $canEdit, $canArch
     <?php if (!$clients): ?>
         <p class="muted"><?= e($emptyMessage) ?></p>
     <?php else: ?>
-    <?php require __DIR__ . '\\clientes-buscador.php'; ?>
+    <?php require __DIR__ . '/clientes-buscador.php'; ?>
     <div class="table-wrap">
         <table class="clients-table" id="clients-active-table">
             <thead><tr>

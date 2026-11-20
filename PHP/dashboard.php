@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '\\auth.php';
-require __DIR__ . '\\layout.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/layout.php';
 
 $canViewUsers = puede('Usuarios y roles', 'ver');
 $canCreateUsers = $canViewUsers && puede('Usuarios y roles', 'crear');

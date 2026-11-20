@@ -3,7 +3,12 @@ declare(strict_types=1);
 
 function database(): PDO
 {
-    $configPath = 'C:\\xampp\\private\\smart-business-db.php';
+    $configPath = getenv('SMART_BUSINESS_DB_CONFIG');
+    if (!is_string($configPath) || $configPath === '') {
+        $configPath = PHP_OS_FAMILY === 'Windows'
+            ? 'C:/xampp/private/smart-business-db.php'
+            : '/etc/smart-business/smart-business-db.php';
+    }
     if (!is_file($configPath)) {
         throw new RuntimeException('Falta el archivo privado de configuración de la base de datos.');
     }

@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '\\auth.php';
-require __DIR__ . '\\layout.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/layout.php';
 exigirPermiso('Usuarios y roles', 'ver');
 
 $isAdmin = (int) $_SESSION['rol_id'] === 1;

@@ -6,8 +6,8 @@ if (PHP_SAPI !== 'cli') {
     exit;
 }
 
-require __DIR__ . '\\database.php';
-require __DIR__ . '\\clientes-schema.php';
+require __DIR__ . '/database.php';
+require __DIR__ . '/clientes-schema.php';
 
 try {
     instalarEsquemaClientes(database());

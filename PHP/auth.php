@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '\\session.php';
-require_once __DIR__ . '\\database.php';
+require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/database.php';
 
 if (!isset($_SESSION['id_usuario'], $_SESSION['ultima_actividad'])
     || time() - (int) $_SESSION['ultima_actividad'] > 7200
