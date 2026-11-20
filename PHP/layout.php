@@ -1,0 +1,76 @@
+<?php
+declare(strict_types=1);
+
+function sidebarLink(string $url, string $label, string $icon, bool $active = false): void
+{
+    $current = $active ? ' aria-current="page"' : '';
+    echo '<a class="sidebar-link' . ($active ? ' is-active' : '') . '" href="' . e($url)
+        . '" aria-label="' . e($label) . '" title="' . e($label) . '"' . $current . '>'
+        . '<span class="sidebar-icon" aria-hidden="true">' . e($icon) . '</span>'
+        . '<span class="sidebar-label">' . e($label) . '</span></a>';
+}
+
+function portalStart(string $title): void
+{
+    $page = basename($_SERVER['SCRIPT_NAME']);
+    $canViewUsers = puede('Usuarios y roles', 'ver');
+    $canCreateUsers = $canViewUsers && puede('Usuarios y roles', 'crear');
+    $isAdmin = (int) $_SESSION['rol_id'] === 1;
+    ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= e($title) ?> | Smart Business</title>
+    <link rel="stylesheet" href="../Estilos_CSS/portal.css">
+    <script src="portal.js" defer></script>
+</head>
+<body>
+<div class="portal-shell" id="portal-shell">
+    <aside class="sidebar" aria-label="Menú lateral">
+        <div class="sidebar-heading">
+            <a class="sidebar-brand" href="dashboard.php" aria-label="Extranet Smart Business">
+                <span class="brand-mark" aria-hidden="true">SB</span>
+                <span class="sidebar-label">Extranet <strong>Smart Business</strong></span>
+            </a>
+            <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-label="Reducir menú lateral" aria-pressed="false" title="Reducir menú lateral" hidden>
+                <span aria-hidden="true">‹</span>
+            </button>
+        </div>
+        <nav class="sidebar-nav" aria-label="Navegación principal">
+            <?php sidebarLink('dashboard.php', 'Inicio', 'I', $page === 'dashboard.php'); ?>
+            <?php if ($canViewUsers): ?>
+                <?php sidebarLink('usuarios.php', 'Usuarios y roles', 'U', $page === 'usuarios.php'); ?>
+            <?php endif; ?>
+            <?php if ($canCreateUsers): ?>
+                <?php sidebarLink('usuarios.php#crear-usuario', 'Registrar usuario', '+'); ?>
+            <?php endif; ?>
+            <?php if ($isAdmin): ?>
+                <?php sidebarLink('permisos.php', 'Roles y permisos', 'P', $page === 'permisos.php'); ?>
+            <?php endif; ?>
+        </nav>
+        <form class="sidebar-logout" action="logout.php" method="post">
+            <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
+            <button type="submit" class="sidebar-link" aria-label="Cerrar sesión" title="Cerrar sesión">
+                <span class="sidebar-icon" aria-hidden="true">↪</span>
+                <span class="sidebar-label">Cerrar sesión</span>
+            </button>
+        </form>
+    </aside>
+    <div class="portal-content">
+        <header class="portal-header">
+            <img src="../Logo/Business_Poca_Resolucion.jpg" alt="Smart Business Corporation">
+            <div class="portal-heading">
+                <span class="eyebrow">Extranet Smart Business</span>
+                <span class="portal-heading-title"><?= e($title) ?></span>
+            </div>
+        </header>
+        <main>
+    <?php
+}
+
+function portalEnd(): void
+{
+    echo '</main></div></div></body></html>';
+}
