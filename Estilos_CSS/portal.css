@@ -128,8 +128,9 @@ th { color: #536a73; }
 .clients-badge-positive { background: #dcfce7; color: #166534; }
 .clients-badge-negative { background: #fee2e2; color: #991b1b; }
 .clients-badge-neutral { background: #fef3c7; color: #854d0e; }
-.basc-document-info { margin-left: auto; padding: 10px 14px; border: 1px solid #e4eaec; border-radius: 8px; background: #fff; text-align: center; }
+.basc-document-info { margin-left: auto; margin-right: 24px; padding: 10px 14px; border: 1px solid #e4eaec; border-radius: 8px; background: #fff; text-align: center; }
 .clients-header .basc-document-info p { margin: 0; color: #354e57; font-size: 12px; line-height: 1.5; }
+.basc-document-info a { display: inline-block; margin-top: 5px; color: #006d88; font-size: 12px; font-weight: 600; }
 .basc-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; align-items: end; }
 .basc-fields label { line-height: 1.45; }
 .basc-scroll-hint { margin: 0 0 10px !important; }
@@ -179,7 +180,7 @@ th { color: #536a73; }
     .users-header, .permissions-header, .clients-header { flex-wrap: wrap; gap: 12px; }
     .users-header img, .permissions-header img, .clients-header img { width: 150px; height: 66px; flex-basis: 150px; }
     .users-header h1, .permissions-header h1, .clients-header h1 { font-size: 22px; }
-    .basc-document-info { margin-left: 0; }
+    .basc-document-info { margin: 0; }
     .users-card, .permissions-card, .clients-card { padding: 18px; }
     .users-fields label, .users-fields button { flex: 1 1 100%; }
     .clients-search-bar input:not([type=checkbox]):not([type=hidden]) { flex-basis: 100%; }

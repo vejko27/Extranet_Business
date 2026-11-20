@@ -120,7 +120,7 @@ portalStart('Roles y permisos');
     <?php if ($selectedRole === 1): ?>
         <p>El administrador tiene todos los permisos; no se pueden modificar.</p>
     <?php else: ?>
-        <p>Para entrar a un módulo, activa «Ver». En Clientes, «Eliminar» permite archivar y restaurar clientes. En BASC Comercial, «Editar» permite evaluar clientes homologados.</p>
+        <p>Para entrar a un módulo, activa «Ver». En Clientes, «Eliminar» permite archivar y restaurar clientes. En BASC Comercial, «Editar» permite evaluar clientes homologados. «Editar» de BASC Documento permite cambiar el código, la versión y la fecha; también se necesita «Ver» de BASC Comercial.</p>
         <form method="post">
             <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
             <input type="hidden" name="accion" value="guardar">

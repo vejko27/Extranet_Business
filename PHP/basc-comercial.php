@@ -6,6 +6,7 @@ require __DIR__ . '\\layout.php';
 exigirPermiso('BASC Comercial', 'ver');
 
 $canEdit = puede('BASC Comercial', 'editar');
+$canEditDocument = puede('BASC Documento', 'editar');
 $questions = [
     'cadena_suministro' => '¿Pertenece a la cadena de suministros del comercio internacional?',
     'contacto_mercaderia' => '¿Está en contacto con la mercadería de exportación o importación o tiene información de la operación?',
@@ -22,14 +23,65 @@ unset($_SESSION['basc_comercial_notice']);
 
 try {
     $isPost = $_SERVER['REQUEST_METHOD'] === 'POST';
-    if ($isPost || isset($_GET['editar'])) {
-        if (!$canEdit) {
+    $action = $isPost ? ($_POST['accion'] ?? 'guardar_evaluacion') : '';
+    if ($isPost && !in_array($action, ['guardar_evaluacion', 'guardar_documento'], true)) {
+        http_response_code(400);
+        exit('Acción no válida.');
+    }
+    if ($isPost && !validCsrfToken($_POST['csrf_token'] ?? null)) {
+        http_response_code(403);
+        exit('La sesión del formulario ha caducado. Vuelve a cargar la página.');
+    }
+    $document = $db->query('SELECT codigo, version, fecha FROM basc_documento WHERE id = 1')->fetch();
+    if (!$document) {
+        throw new RuntimeException('Faltan los datos del documento BASC.');
+    }
+    $documentDate = DateTimeImmutable::createFromFormat('!Y-m-d', $document['fecha']);
+    if (!$documentDate || $documentDate->format('Y-m-d') !== $document['fecha']) {
+        throw new RuntimeException('La fecha del documento BASC no es válida.');
+    }
+    $documentValues = $document;
+    $editingDocument = ($isPost && $action === 'guardar_documento') || isset($_GET['editar_documento']);
+    if ($editingDocument) {
+        if (!$canEditDocument) {
             http_response_code(403);
             exit('Acceso denegado.');
         }
-        if ($isPost && !validCsrfToken($_POST['csrf_token'] ?? null)) {
+        if ($isPost && $action === 'guardar_documento') {
+            foreach (array_keys($documentValues) as $key) {
+                if (!isset($_POST[$key]) || !is_string($_POST[$key])) {
+                    $error = 'Revisa el código, la versión y la fecha del documento.';
+                } else {
+                    $documentValues[$key] = trim($_POST[$key]);
+                }
+            }
+            $date = preg_match('/\A[0-9]{4}-[0-9]{2}-[0-9]{2}\z/', $documentValues['fecha']) === 1
+                ? DateTimeImmutable::createFromFormat('!Y-m-d', $documentValues['fecha'])
+                : false;
+            if (preg_match('/\A.{1,100}\z/us', $documentValues['codigo']) !== 1
+                || preg_match('/\A.{1,40}\z/us', $documentValues['version']) !== 1
+                || !$date || $date->format('Y-m-d') !== $documentValues['fecha']
+                || $documentValues['fecha'] < '1000-01-01' || $documentValues['fecha'] > '9999-12-31'
+            ) {
+                $error = 'Revisa el código, la versión y la fecha del documento.';
+            }
+            if ($error === '') {
+                $statement = $db->prepare('UPDATE basc_documento SET codigo = :codigo, version = :version, fecha = :fecha WHERE id = 1');
+                $statement->execute($documentValues);
+                if ($statement->rowCount() === 0 && !$db->query('SELECT id FROM basc_documento WHERE id = 1')->fetch()) {
+                    throw new RuntimeException('El documento BASC ya no está disponible.');
+                }
+                $_SESSION['basc_comercial_notice'] = 'Datos del documento actualizados correctamente.';
+                header('Location: basc-comercial.php', true, 303);
+                exit;
+            }
+            http_response_code(422);
+        }
+    }
+    if (($isPost && $action === 'guardar_evaluacion') || (!$isPost && isset($_GET['editar']))) {
+        if (!$canEdit) {
             http_response_code(403);
-            exit('La sesión del formulario ha caducado. Vuelve a cargar la página.');
+            exit('Acceso denegado.');
         }
         $idInput = $isPost ? ($_POST['id'] ?? null) : ($_GET['editar'] ?? null);
         $id = is_string($idInput) && ctype_digit($idInput) ? (int) $idInput : 0;
@@ -106,7 +158,7 @@ try {
     );
     $statement->execute(['homologado']);
     $clients = $statement->fetchAll();
-} catch (PDOException $exception) {
+} catch (PDOException | RuntimeException $exception) {
     if ($db->inTransaction()) {
         $db->rollBack();
     }
@@ -124,19 +176,40 @@ portalStart('BASC - Comercial');
         <p>BASC - Comercial · Clientes homologados</p>
     </div>
     <div class="basc-document-info" aria-label="Información del documento">
-        <p>Código: <strong>SBC.R.043</strong></p>
-        <p>Versión: <strong>002</strong></p>
-        <p>Fecha: <strong>11/11/2026</strong></p>
+        <p>Código: <strong><?= e($document['codigo']) ?></strong></p>
+        <p>Versión: <strong><?= e($document['version']) ?></strong></p>
+        <p>Fecha: <strong><?= e($documentDate->format('d/m/Y')) ?></strong></p>
+        <?php if ($canEditDocument): ?><a href="basc-comercial.php?editar_documento=1#documento">Editar datos</a><?php endif; ?>
     </div>
 </div>
 <?php if ($notice !== ''): ?><p class="notice" role="status"><?= e($notice) ?></p><?php endif; ?>
 <?php if ($error !== ''): ?><p class="notice error" role="alert"><?= e($error) ?></p><?php endif; ?>
+
+<?php if ($editingDocument): ?>
+<section class="card clients-card" id="documento">
+    <h2>Editar información del documento</h2>
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
+        <input type="hidden" name="accion" value="guardar_documento">
+        <div class="basc-fields">
+            <label>Código <input name="codigo" maxlength="100" required value="<?= e($documentValues['codigo']) ?>"></label>
+            <label>Versión <input name="version" maxlength="40" required value="<?= e($documentValues['version']) ?>"></label>
+            <label>Fecha <input type="date" name="fecha" min="1000-01-01" max="9999-12-31" required value="<?= e($documentValues['fecha']) ?>"></label>
+        </div>
+        <div class="clients-form-actions">
+            <button type="submit">Guardar datos</button>
+            <a class="button button-secondary" href="basc-comercial.php">Cancelar</a>
+        </div>
+    </form>
+</section>
+<?php endif; ?>
 
 <?php if ($editing): ?>
 <section class="card clients-card" id="evaluar">
     <h2>Evaluar a <?= e($editing['razon_social']) ?></h2>
     <form method="post">
         <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
+        <input type="hidden" name="accion" value="guardar_evaluacion">
         <input type="hidden" name="id" value="<?= (int) $editing['id'] ?>">
         <div class="basc-fields">
             <label>Rubro

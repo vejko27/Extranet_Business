@@ -41,5 +41,17 @@ function instalarEsquemaClientes(PDO $db): void
             FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     );
-    $db->exec("INSERT INTO modulos (nombre) VALUES ('Clientes'), ('BASC Comercial') ON DUPLICATE KEY UPDATE id = id");
+    $db->exec(
+        "CREATE TABLE IF NOT EXISTS basc_documento (
+            id TINYINT UNSIGNED NOT NULL PRIMARY KEY,
+            codigo VARCHAR(100) NOT NULL,
+            version VARCHAR(40) NOT NULL,
+            fecha DATE NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    );
+    $db->exec(
+        "INSERT INTO basc_documento (id, codigo, version, fecha) VALUES (1, 'SBC.R.043', '002', '2026-11-11')
+         ON DUPLICATE KEY UPDATE id = id"
+    );
+    $db->exec("INSERT INTO modulos (nombre) VALUES ('Clientes'), ('BASC Comercial'), ('BASC Documento') ON DUPLICATE KEY UPDATE id = id");
 }
