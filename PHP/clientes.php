@@ -8,6 +8,7 @@ exigirPermiso('Clientes', 'ver');
 $canCreate = puede('Clientes', 'crear');
 $canEdit = puede('Clientes', 'editar');
 $types = ['' => 'Sin indicar', 'nacional' => 'Nacional', 'exterior' => 'Exterior'];
+$certificates = ['' => 'Sin indicar', 'OEA' => 'OEA', 'BASC' => 'BASC', 'ISO 2800' => 'ISO 2800'];
 $answers = ['' => 'Sin indicar', 'si' => 'Sí', 'no' => 'No', 'no_aplica' => 'No aplica'];
 $statuses = ['' => 'Sin indicar', 'pendiente' => 'Pendiente', 'homologado' => 'Homologado'];
 $values = [
@@ -69,6 +70,8 @@ try {
         if ($values['razon_social'] === '' || strlen($values['razon_social']) > 200
             || strlen($values['ruc']) > 30 || strlen($values['certificado']) > 100
             || !array_key_exists($values['tipo'], $types)
+            || (!array_key_exists($values['certificado'], $certificates)
+                && (!$editing || $values['certificado'] !== $editing['certificado']))
             || !array_key_exists($values['acuerdo_seguridad'], $answers)
             || !array_key_exists($values['ddjj'], $answers)
             || !array_key_exists($values['estado'], $statuses)
@@ -146,7 +149,16 @@ portalStart('Clientes');
                     <?php endforeach; ?>
                 </select>
             </label>
-            <label>Certificado <input name="certificado" maxlength="100" value="<?= e($values['certificado']) ?>"></label>
+            <label>Certificado
+                <select name="certificado">
+                    <?php foreach ($certificates as $key => $label): ?>
+                        <option value="<?= e($key) ?>" <?= $values['certificado'] === $key ? 'selected' : '' ?>><?= e($label) ?></option>
+                    <?php endforeach; ?>
+                    <?php if ($editing && !array_key_exists($editing['certificado'], $certificates)): ?>
+                        <option value="<?= e($editing['certificado']) ?>" <?= $values['certificado'] === $editing['certificado'] ? 'selected' : '' ?>><?= e($editing['certificado']) ?> (existente)</option>
+                    <?php endif; ?>
+                </select>
+            </label>
             <label>Acuerdo de seguridad
                 <select name="acuerdo_seguridad">
                     <?php foreach ($answers as $key => $label): ?>
