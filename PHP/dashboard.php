@@ -6,6 +6,7 @@ require __DIR__ . '\\layout.php';
 
 $canViewUsers = puede('Usuarios y roles', 'ver');
 $canCreateUsers = $canViewUsers && puede('Usuarios y roles', 'crear');
+$canViewClients = puede('Clientes', 'ver');
 $isAdmin = (int) $_SESSION['rol_id'] === 1;
 
 portalStart('Inicio');
@@ -18,9 +19,15 @@ portalStart('Inicio');
     </div>
 </div>
 
-<?php if ($canViewUsers || $isAdmin): ?>
+<?php if ($canViewUsers || $canViewClients || $isAdmin): ?>
 <section class="dashboard-section" aria-label="Accesos rápidos">
     <div class="dashboard-grid">
+        <?php if ($canViewClients): ?>
+            <a class="dashboard-card" href="clientes.php">
+                <strong>Clientes</strong>
+                <span>Consulta el listado de clientes del área comercial.</span>
+            </a>
+        <?php endif; ?>
         <?php if ($canViewUsers): ?>
             <a class="dashboard-card" href="usuarios.php">
                 <strong>Usuarios y roles</strong>

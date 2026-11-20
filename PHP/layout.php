@@ -15,6 +15,7 @@ function portalStart(string $title): void
     $page = basename($_SERVER['SCRIPT_NAME']);
     $canViewUsers = puede('Usuarios y roles', 'ver');
     $canCreateUsers = $canViewUsers && puede('Usuarios y roles', 'crear');
+    $canViewClients = puede('Clientes', 'ver');
     $isAdmin = (int) $_SESSION['rol_id'] === 1;
     ?>
 <!DOCTYPE html>
@@ -41,6 +42,18 @@ function portalStart(string $title): void
         </div>
         <nav class="sidebar-nav" aria-label="Navegación principal">
             <?php sidebarLink('dashboard.php', 'Inicio', 'I', $page === 'dashboard.php'); ?>
+            <?php if ($canViewClients): ?>
+                <details class="sidebar-group"<?= $page === 'clientes.php' ? ' open' : '' ?>>
+                    <summary class="sidebar-link sidebar-group-heading" aria-label="Área Comercial">
+                        <span class="sidebar-icon" aria-hidden="true">A</span>
+                        <span class="sidebar-label">Área Comercial</span>
+                        <span class="sidebar-group-chevron" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="sidebar-submenu">
+                        <?php sidebarLink('clientes.php', 'Control de clientes homologados', 'C', $page === 'clientes.php'); ?>
+                    </div>
+                </details>
+            <?php endif; ?>
             <?php if ($canViewUsers): ?>
                 <?php sidebarLink('usuarios.php', 'Usuarios y roles', 'U', $page === 'usuarios.php'); ?>
             <?php endif; ?>
@@ -60,7 +73,7 @@ function portalStart(string $title): void
         </form>
     </aside>
     <div class="portal-content">
-        <?php if ($page !== 'dashboard.php' && $page !== 'usuarios.php' && $page !== 'permisos.php'): ?>
+        <?php if ($page !== 'dashboard.php' && $page !== 'usuarios.php' && $page !== 'permisos.php' && $page !== 'clientes.php'): ?>
         <header class="portal-header">
             <img src="../Logo/Business_Poca_Resolucion.jpg" alt="Smart Business Corporation">
             <div class="portal-heading">
@@ -69,7 +82,7 @@ function portalStart(string $title): void
             </div>
         </header>
         <?php endif; ?>
-        <main<?= $page === 'dashboard.php' ? ' class="dashboard-main"' : ($page === 'usuarios.php' ? ' class="users-main"' : ($page === 'permisos.php' ? ' class="permissions-main"' : '')) ?>>
+        <main<?= $page === 'dashboard.php' ? ' class="dashboard-main"' : ($page === 'usuarios.php' ? ' class="users-main"' : ($page === 'permisos.php' ? ' class="permissions-main"' : ($page === 'clientes.php' ? ' class="clients-main"' : ''))) ?>>
     <?php
 }
 

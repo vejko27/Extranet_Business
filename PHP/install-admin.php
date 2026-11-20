@@ -7,6 +7,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 require __DIR__ . '\\database.php';
+require __DIR__ . '\\clientes-schema.php';
 
 $password = fgets(STDIN);
 if ($password === false) {
@@ -14,8 +15,8 @@ if ($password === false) {
     exit(1);
 }
 $password = rtrim($password, "\r\n");
-if (strlen($password) < 12 || strlen($password) > 72 || str_contains($password, "\0")) {
-    fwrite(STDERR, "La contraseña debe tener entre 12 y 72 bytes y no contener caracteres nulos.\n");
+if (strlen($password) < 8 || strlen($password) > 72 || str_contains($password, "\0")) {
+    fwrite(STDERR, "La contraseña debe tener entre 8 y 72 bytes y no contener caracteres nulos.\n");
     exit(1);
 }
 
@@ -60,6 +61,7 @@ try {
             FOREIGN KEY (modulo_id) REFERENCES modulos(id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     );
+    instalarEsquemaClientes($db);
     $db->beginTransaction();
     $db->exec("INSERT INTO roles (id, nombre) VALUES (1, 'Administrador'), (2, 'Usuario')
         ON DUPLICATE KEY UPDATE id = id");

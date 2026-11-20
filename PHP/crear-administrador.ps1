@@ -6,7 +6,7 @@ if (-not (Test-Path -LiteralPath $php -PathType Leaf)) {
     throw "No se encontro PHP en $php."
 }
 
-$first = Read-Host 'Contrasena inicial de vcanova (minimo 12 caracteres)' -AsSecureString
+$first = Read-Host 'Contrasena inicial de vcanova (minimo 8 bytes en UTF-8)' -AsSecureString
 $second = Read-Host 'Confirma la contrasena' -AsSecureString
 $firstPointer = [IntPtr]::Zero
 $secondPointer = [IntPtr]::Zero

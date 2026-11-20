@@ -24,7 +24,7 @@ Los archivos JavaScript se encuentran en `Desarrollos_JS` en la raíz del proyec
    powershell -ExecutionPolicy Bypass -File .\PHP\crear-administrador.ps1
    ```
 
-   Introduce dos veces, sin compartirla en el chat, la contraseña inicial del usuario `vcanova`. Debe tener al menos 12 y como máximo 72 bytes en UTF-8. El instalador crea las tablas `usuarios`, `roles`, `modulos` y `permisos` si no existen; no modifica ni reemplaza un usuario `vcanova` existente. El rol inicial Administrador tiene acceso completo y el rol Usuario parte sin permisos.
+   Introduce dos veces, sin compartirla en el chat, la contraseña inicial del usuario `vcanova`. Debe tener al menos 8 y como máximo 72 bytes en UTF-8. El instalador crea las tablas `usuarios`, `roles`, `modulos` y `permisos` si no existen; no modifica ni reemplaza un usuario `vcanova` existente. El rol inicial Administrador tiene acceso completo y el rol Usuario parte sin permisos.
 
 4. Abre `http://localhost/Extranet_Business/` e inicia sesión con `vcanova` y la contraseña elegida. Después de la instalación, reduce los permisos de la cuenta de MySQL a los necesarios para el funcionamiento.
 
@@ -35,5 +35,9 @@ Las contraseñas de los usuarios se guardan como hashes; la contraseña de MySQL
 Los administradores pueden crear roles, configurar permisos y gestionar usuarios. Los demás roles empiezan sin permisos; solo pueden acceder a los módulos y acciones autorizados. Solo un administrador puede asignar otros roles o modificar sus permisos.
 
 El portal muestra en el menú lateral y en los accesos rápidos únicamente las opciones disponibles para el usuario. En escritorio se puede reducir el menú lateral; en móviles se adapta al ancho de pantalla.
+
+El módulo Clientes permite registrar y editar clientes desde Área Comercial. Su estado se selecciona manualmente. El administrador puede asignar los permisos de Clientes desde Roles y permisos; los demás roles no reciben acceso automáticamente.
+
+En una instalación existente anterior al módulo, ejecuta `C:\xampp\php\php.exe .\PHP\actualizar-clientes.php` desde la raíz del proyecto para crear la tabla y registrar el módulo sin modificar los datos existentes. Se requieren permisos de creación de tablas e inserción. En una instalación nueva, el instalador inicial crea el módulo.
 
 HTTP es apropiado solo para pruebas locales: antes de publicar o usar la extranet en una red, configura HTTPS, protección frente a intentos repetidos de acceso a nivel de servidor y permisos restringidos para la configuración y la base de datos. El bloqueo actual tras cinco intentos fallidos solo afecta a la sesión del navegador y no sustituye una protección contra fuerza bruta. No hay recuperación automática de contraseñas.

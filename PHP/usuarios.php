@@ -73,9 +73,9 @@ try {
             ) {
                 $error = 'Revisa el nombre, usuario, correo y rol seleccionado.';
             } elseif (($action === 'crear' || $password !== '')
-                && (strlen($password) < 12 || strlen($password) > 72 || str_contains($password, "\0"))
+                && (strlen($password) < 8 || strlen($password) > 72 || str_contains($password, "\0"))
             ) {
-                $error = 'La contraseña debe tener entre 12 y 72 bytes.';
+                $error = 'La contraseña debe tener entre 8 y 72 bytes y no contener caracteres nulos.';
             } elseif ($action === 'editar' && $id === (int) $_SESSION['id_usuario']
                 && $roleId !== (int) $_SESSION['rol_id']
             ) {
@@ -172,7 +172,7 @@ portalStart('Usuarios y roles');
             </label>
             <button type="submit"><?= $editing ? 'Guardar cambios' : 'Crear' ?></button>
         </div>
-        <p class="muted" id="password-hint">La contraseña debe tener entre 12 y 72 bytes. <?= $editing ? 'Déjala vacía para conservar la actual. ' : '' ?>Solo un administrador puede asignar otros roles.</p>
+        <p class="muted" id="password-hint">La contraseña debe tener entre 8 y 72 bytes. <?= $editing ? 'Déjala vacía para conservar la actual. ' : '' ?>Solo un administrador puede asignar otros roles.</p>
         <?php if ($editing): ?><a href="usuarios.php">Cancelar edición</a><?php endif; ?>
     </form>
 </section>
