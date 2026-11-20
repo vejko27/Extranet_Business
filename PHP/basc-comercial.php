@@ -123,6 +123,11 @@ portalStart('BASC - Comercial');
         <h1>Matriz de criticidad clientes</h1>
         <p>BASC - Comercial · Clientes homologados</p>
     </div>
+    <div class="basc-document-info" aria-label="Información del documento">
+        <p>Código: <strong>SBC.R.043</strong></p>
+        <p>Versión: <strong>002</strong></p>
+        <p>Fecha: <strong>11/11/2026</strong></p>
+    </div>
 </div>
 <?php if ($notice !== ''): ?><p class="notice" role="status"><?= e($notice) ?></p><?php endif; ?>
 <?php if ($error !== ''): ?><p class="notice error" role="alert"><?= e($error) ?></p><?php endif; ?>
